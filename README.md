@@ -1,4 +1,4 @@
-Project: Supply Chain Inventory Logic
+Project: The Supply Chain Inventory Logic
 
 This module demonstrates how OOP can optimize supply chain operations.
 
