@@ -35,7 +35,23 @@ class PerishableItem(InventoryItem):
         """Polymorphic implementation of the report."""
         status = "Fresh" if self.expiry_date > datetime.now() else "EXPIRED"
         return f"[Perishable] {self.name} | Status: {status} | Value: ${self.total_value:,.2f}"
+class ElectronicItem(InventoryItem):
+    """
+    Represents hardware/electronics.
+    Demonstrates: INHERITANCE and POLYMORPHISM
+    """
+    def __init__(self, item_id, name, price, quantity, warranty_months):
+        # super() links this to the main InventoryItem class
+        super().__init__(item_id, name, price, quantity)
+        self.warranty_months = warranty_months
 
+    @abstractmethod
+    def get_inventory_report(self):
+        """Overrides the parent method to show warranty info."""
+        return (f"ELECTRONIC: {self.name} (ID: {self.item_id}) | "
+                   f"Warranty: {self.warranty_months} months | "
+                    f"Stock: {self._quantity}")
+    
 class Warehouse:
     """
     Manages a collection of inventory items.
