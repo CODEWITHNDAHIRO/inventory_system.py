@@ -45,7 +45,7 @@ class ElectronicItem(InventoryItem):
         super().__init__(item_id, name, price, quantity)
         self.warranty_months = warranty_months
 
-    @abstractmethod
+    
     def get_inventory_report(self):
         """Overrides the parent method to show warranty info."""
         return (f"ELECTRONIC: {self.name} (ID: {self.item_id}) | "
