@@ -127,6 +127,23 @@ class Warehouse:
                     print(f"Loading {entry['name']}...")
         except FileNotFoundError:
             print("No saved inventory found.")
+    def remove_item(self, item_id):
+        """
+        Removes an item from the warehouse using its ID.
+        Demonstrates: List filtering and Encapsulation.
+        """
+        # Save the current count to check if we actually deleted something
+        initial_count = len(self.__items)
+        
+        # Keep every item EXCEPT the one matching the item_id
+        self.__items = [item for item in self.__items if item.item_id != item_id]
+        
+        if len(self.__items) < initial_count:
+            print(f"SUCCESS: Item {item_id} has been removed.")
+        else:
+            print(f"ERROR: Item ID {item_id} not found in inventory.")
+
+
 
 
 
