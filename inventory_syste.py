@@ -1,6 +1,6 @@
+import json
 from abc import ABC, abstractmethod
 from datetime import datetime
-
 class InventoryItem(ABC):
     """
     Abstract Base Class representing a generic inventory item.
@@ -71,6 +71,37 @@ class Warehouse:
         for item in self.__items:
             # Polymorphism in action: calling the same method on different item types
             print(item.get_inventory_report())
+    def save_to_file(self, filename="inventory.json"):
+        data = []
+        for item in self.__items:
+            # We convert the object data into a dictionary for JSON
+            item_data = {
+                "item_id": item.item_id,
+                "name": item.name,
+                "price": item._price,
+                "quantity": item.quantity,
+                "type": type(item).__name__
+            }
+            # If it's perishable, save the expiry date too
+            if isinstance(item, PerishableItem):
+                item_data["expiry_date"] = item.self.expiry_date.strftime("%Y-%m-%d")
+            data.append(item_data)
+        
+        with open(filename, "w") as f:
+            json.dump(data, f, indent=4)
+        print(f"Inventory saved to {filename}")
+
+    def load_from_file(self, filename="inventory.json"):
+        try:
+            with open(filename, "r") as f:
+                data = json.load(f)
+                for entry in data:
+                    # Logic to recreate objects from the JSON data goes here
+                    print(f"Loading {entry['name']}...")
+        except FileNotFoundError:
+            print("No saved inventory found.")
+
+
 
 # --- Execution ---
 if __name__ == "__main__":
