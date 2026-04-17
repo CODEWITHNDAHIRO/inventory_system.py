@@ -90,6 +90,33 @@ class Warehouse:
         with open(filename, "w") as f:
             json.dump(data, f, indent=4)
         print(f"Inventory saved to {filename}")
+    def load_from_file(self, filename="inventory.json"):
+        try:
+            with open(filename, "r") as f:
+                data = json.load(f)
+                # Clear current items to avoid duplicates on load
+                self._Warehouse__items = [] 
+                
+                for entry in data:
+                    if entry["type"] == "PerishableItem":
+                        new_item = PerishableItem(
+                            entry["item_id"], 
+                            entry["name"], 
+                            entry["price"], 
+                            entry["quantity"], 
+                            entry["expiry_date"]
+                        )
+                    else:
+                        # Add logic here if you create other non-perishable types later
+                        pass 
+                    
+                    self.add_item(new_item)
+            print(f"Successfully loaded {len(data)} items from {filename}")
+        except FileNotFoundError:
+            print("Error: No inventory file found to load.")
+        except Exception as e:
+            print(f"An error occurred while loading: {e}")
+
 
     def load_from_file(self, filename="inventory.json"):
         try:
